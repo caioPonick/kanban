@@ -1,0 +1,44 @@
+body{
+    font-family: Arial, sans-serif; 
+}
+        
+.form-container{ 
+    max-width: 400px; 
+    margin: 40px auto; 
+    background: #fafafa; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    padding: 24px; 
+}
+        
+label{ 
+    display: block; 
+    margin-top: 12px; 
+}
+        
+input, select{ 
+    width: 100%; 
+    padding: 8px; 
+    margin-top: 4px; 
+}
+        
+button{ 
+    margin-top: 16px; 
+    background: #1976d2; 
+    color: #fff; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+        
+button:hover{ 
+    background: #1565c0; 
+}
+        
+a{ 
+    display: inline-block; 
+    margin-top: 16px; 
+    color: #1976d2; 
+    text-decoration: none; 
+}

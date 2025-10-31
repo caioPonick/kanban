@@ -1,0 +1,89 @@
+body{ 
+    font-family: Arial, sans-serif; 
+}
+        
+.header{ 
+    background: #1976d2; 
+    color: #fff; 
+    padding: 16px; 
+    margin-bottom: 20px; 
+}
+        
+.header h2{ 
+    margin: 0; 
+    display: inline-block; 
+}
+        
+.nav{ 
+    float: right; 
+}
+        
+.nav a{ 
+    color: #fff; 
+    margin-left: 20px; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+        
+.tarefas-container{ 
+    display: flex; 
+    gap: 20px; 
+}
+        
+.grupo{ 
+    flex: 1; 
+}
+        
+.grupo h3{ 
+    background: #eee; 
+    padding: 8px; 
+    margin: 0 0 10px 0; 
+}
+        
+.card{ 
+    background: #fafafa; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    padding: 12px; 
+    margin-bottom: 16px; 
+    box-shadow: 0 2px 4px #eee; 
+}
+        
+.card b{ 
+    display: block; 
+    margin-bottom: 4px; 
+}
+        
+.card-actions{ 
+    margin-top: 10px; 
+}
+        
+.card-actions form, .card-actions a{ 
+    display: inline-block; 
+    margin-right: 6px; 
+}
+        
+.card-actions button{ 
+    background: #1976d2; 
+    color: #fff; 
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+        
+.card-actions button:hover{ 
+    background: #1565c0; 
+}
+        
+.card-actions a{ 
+    background: #eee; 
+    color: #1976d2; 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    text-decoration: none; 
+}
+        
+.card-actions a:hover{ 
+    background: #ddd; 
+}
