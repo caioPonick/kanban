@@ -1,14 +1,15 @@
 <?php
+session_start();
 require_once '../db/db.php';
 if (isset($_POST['alterar_status'])) {
     $id = $_POST['idtarefa'];
     $novo_status = $_POST['novo_status'];
-    $stmt = $conn->prepare('UPDATE tarefa SET status=? WHERE idtarefa=?');
-    $stmt->execute([$novo_status, $id]);
+    $stmt = $conn->prepare('UPDATE tarefa SET status=? WHERE idtarefa=? AND usuario_idtarefa=?');
+    $stmt->execute([$novo_status, $id, $_SESSION['usuario_id']]);
     header('Location: visualizar_tarefas.php');
     exit;
 }
-$tarefas = $conn->query('SELECT t.*, u.nomeUsuario FROM tarefa t JOIN usuario u ON t.usuario_idusuario = u.idusuario ORDER BY t.idtarefa DESC')->fetchAll();
+$tarefas = $conn->query('SELECT t.*, u.nomeUsuario FROM tarefa t JOIN usuario u ON t.usuario_idtarefa = u.idtarefa ORDER BY t.idtarefa DESC')->fetchAll();
 $grupos = ['a fazer' => [], 'fazendo' => [], 'feito' => []];
 foreach ($tarefas as $t) {
     $grupos[$t['status']][] = $t;
@@ -28,6 +29,11 @@ foreach ($tarefas as $t) {
             <a href="usuarios.php">Cadastro de Usuários</a>
             <a href="tarefas.php">Cadastro de Tarefas</a>
             <a href="visualizar_tarefas.php">Gerenciar Tarefas</a>
+        </div>
+        <div style="margin:10px 0;">
+            <form method="post" action="logout.php">
+                <button type="submit">Logout</button>
+            </form>
         </div>
         <div style="clear:both"></div>
     </div>
@@ -64,8 +70,9 @@ foreach ($tarefas as $t) {
 <?php
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $stmt = $conn->prepare('DELETE FROM tarefa WHERE idtarefa=?');
-    $stmt->execute([$id]);
+    $stmt = $conn->prepare('DELETE FROM tarefa WHERE idtarefa=? AND usuario_idtarefa=?');
+    $stmt->execute([$id, $_SESSION['usuario_id']]);
     header('Location: visualizar_tarefas.php');
     exit;
 }
+?>

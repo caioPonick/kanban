@@ -1,27 +1,43 @@
+<?php
+session_start();
+require_once 'db/db.php';
+$error = '';
+if (isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+    $stmt = $conn->prepare('SELECT * FROM usuario WHERE emailUsuario=? AND senhaUsuario=?');
+    $stmt->execute([$email, $senha]);
+    $user = $stmt->fetch();
+    if ($user) {
+        $_SESSION['usuario_id'] = $user['idusuario'];
+        $_SESSION['usuario_nome'] = $user['nomeUsuario'];
+        header('Location: public/menu.php');
+        exit;
+    } else {
+        $error = 'E-mail ou senha incorretos.';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANBAN</title>
-    <link rel="stylesheet" href="assets/styleIndex.css">
+    <title>Login - Kanban</title>
+    <link rel="stylesheet" href="assets/styleUsuarios.css">
 </head>
 <body>
-    <div class="header">
-        <h2>KANBAN</h2>
-        <div class="nav">
-            <a href="public/usuarios.php">Cadastro de Usuários</a>
-            <a href="public/tarefas.php">Cadastro de Tarefas</a>
-            <a href="public/visualizar_tarefas.php">Gerenciar Tarefas</a>
-        </div>
-        <div style="clear:both"></div>
-    </div>
     <div class="container">
-        <ul>
-            <li><a class="menu-btn" href="public/usuarios.php">Cadastrar Usuário</a></li>
-            <li><a class="menu-btn" href="public/tarefas.php">Cadastrar Tarefa</a></li>
-            <li><a class="menu-btn" href="public/visualizar_tarefas.php">Visualizar Tarefas</a></li>
-        </ul>
+        <h2>Login de Usuário</h2>
+        <?php if ($error): ?>
+            <div style="color:red;"><?= $error ?></div>
+        <?php endif; ?>
+        <form method="post">
+            <label>Email:</label>
+            <input type="email" name="email" required placeholder="Email">
+            <label>Senha:</label>
+            <input type="password" name="senha" required placeholder="Senha">
+            <button type="submit" name="login">Entrar</button>
+        </form>
     </div>
 </body>
 </html>

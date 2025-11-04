@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS `kanban-login`.`usuario` (
   UNIQUE INDEX `senhaUsuario_UNIQUE` (`senhaUsuario` ASC) VISIBLE)
 ENGINE = InnoDB;
 
+INSERT INTO `kanban-login`.`usuario` (`nomeUsuario`, `senhaUsuario`, `emailUsuario`) VALUES ('Admin', 'admin123', 'admin@kanban.com');
+
 
 -- -----------------------------------------------------
 -- Table `kanban-login`.`tarefa`

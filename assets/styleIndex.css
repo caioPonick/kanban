@@ -64,3 +64,7 @@ a.menu-btn{
 a.menu-btn:hover{ 
     background: #1565c0; 
 }
+
+#logout-btn {
+    background: #d32f2f;
+}

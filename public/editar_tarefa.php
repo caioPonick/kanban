@@ -1,12 +1,15 @@
 <?php
+session_start();
+
 require_once '../db/db.php';
+
 if (!isset($_GET['id'])) {
     header('Location: visualizar_tarefas.php');
     exit;
 }
 $id = $_GET['id'];
-$stmt = $conn->prepare('SELECT * FROM tarefa WHERE idtarefa=?');
-$stmt->execute([$id]);
+$stmt = $conn->prepare('SELECT * FROM tarefa WHERE idtarefa=? AND usuario_idtarefa=?');
+$stmt->execute([$id, $_SESSION['usuario_id']]);
 $tarefa = $stmt->fetch();
 if (!$tarefa) {
     header('Location: visualizar_tarefas.php');
@@ -14,13 +17,13 @@ if (!$tarefa) {
 }
 $usuarios = $conn->query('SELECT * FROM usuario')->fetchAll();
 if (isset($_POST['edit'])) {
-    $usuario = $_POST['usuario_idusuario'];
+    $usuario = $_POST['usuario_idtarefa'];
     $descricao = $_POST['descricaoTarefa'];
     $setor = $_POST['setor'];
     $prioridade = $_POST['prioridade'];
     $data = $_POST['data'];
     $status = $_POST['status'];
-    $stmt = $conn->prepare('UPDATE tarefa SET usuario_idusuario=?, descricaoTarefa=?, setor=?, prioridade=?, data=?, status=? WHERE idtarefa=?');
+    $stmt = $conn->prepare('UPDATE tarefa SET usuario_idtarefa=?, descricaoTarefa=?, setor=?, prioridade=?, data=?, status=? WHERE idtarefa=?');
     $stmt->execute([$usuario, $descricao, $setor, $prioridade, $data, $status, $id]);
     header('Location: visualizar_tarefas.php');
     exit;
@@ -36,6 +39,11 @@ if (isset($_POST['edit'])) {
 <body>
     <div class="form-container">
         <h2>Editar Tarefa</h2>
+        <div style="margin:10px 0;">
+            <form method="post" action="logout.php">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
         <form method="post">
             <label>Usuário Vinculado</label>
             <select name="usuario_idusuario" required>
@@ -45,6 +53,7 @@ if (isset($_POST['edit'])) {
             </select>
             <label>Descrição</label>
             <input type="text" name="descricaoTarefa" required value="<?= htmlspecialchars($tarefa['descricaoTarefa']) ?>">
+            <button type="button" onclick="sugestaoDescricao()">Sugestão de Descrição</button>
             <label>Setor</label>
             <input type="text" name="setor" required value="<?= htmlspecialchars($tarefa['setor']) ?>">
             <label>Prioridade</label>
@@ -65,5 +74,14 @@ if (isset($_POST['edit'])) {
         </form>
         <a href="visualizar_tarefas.php">Voltar</a>
     </div>
+    <script>
+        function sugestaoDescricao() {
+            fetch('https://www.boredapi.com/api/activity')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('[name=descricaoTarefa]').value = data.activity;
+                });
+        }
+    </script>
 </body>
 </html>
